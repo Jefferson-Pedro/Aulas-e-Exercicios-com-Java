@@ -1,4 +1,4 @@
-package conta;
+package util;
 
 public class Cores {
 
