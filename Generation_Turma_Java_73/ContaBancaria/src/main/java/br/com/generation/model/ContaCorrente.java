@@ -1,5 +1,5 @@
 package br.com.generation.model;
 
-public class ContaCorrente {
+public class ContaCorrente extends Conta{
 
 }
