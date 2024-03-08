@@ -59,8 +59,6 @@ public abstract class Conta {
 		System.out.println("Saldo: " + this.saldo);
 
 	}
-  
-
 	
 	//GET E SET
 
