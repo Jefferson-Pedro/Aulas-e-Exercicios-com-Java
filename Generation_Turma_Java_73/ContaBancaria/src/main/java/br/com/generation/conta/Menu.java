@@ -2,13 +2,16 @@ package br.com.generation.conta;
 
 import java.util.Scanner;
 
+import br.com.generation.controller.ContaController;
 import br.com.generation.model.ContaCorrente;
 import br.com.generation.model.ContaPoupanca;
 import br.com.generation.util.Cores;
 
 public class Menu {
 	public static void main(String[] args) {
-		// Classe Filha de Conta - Mesmas caracteristicas da Conta, mas add novos Métodos e Atributos 
+
+		ContaController controller = new ContaController();
+		/*
 				ContaCorrente cc1 = new ContaCorrente(1, 123, 1, "José da Silva", 0.0f, 1000.0f);
 				cc1.visualizar();
 				cc1.sacar(12000.0f);
@@ -23,6 +26,8 @@ public class Menu {
 				cp1.visualizar();
 				cp1.depositar(5000.0f);
 				cp1.visualizar();
+
+		 */
 
 				Scanner leia = new Scanner(System.in);
 				
@@ -62,12 +67,12 @@ public class Menu {
 
 					switch (opcao) {
 					case 1:
+						controller.cadastrar();
 						System.out.println(Cores.TEXT_WHITE + "Criar Conta\n\n");
-
 						break;
 					case 2:
 						System.out.println(Cores.TEXT_WHITE + "Listar todas as Contas\n\n");
-
+						controller.listarTodas();
 						break;
 					case 3:
 						System.out.println(Cores.TEXT_WHITE + "Consultar dados da Conta - por número\n\n");
