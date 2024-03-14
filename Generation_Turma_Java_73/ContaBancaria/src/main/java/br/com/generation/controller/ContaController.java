@@ -6,6 +6,7 @@ import br.com.generation.model.Conta;
 import br.com.generation.model.ContaCorrente;
 import br.com.generation.model.ContaPoupanca;
 import br.com.generation.repository.ContaRepository;
+import br.com.generation.util.Cores;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -36,6 +37,7 @@ public class ContaController implements ContaRepository {
 	@Override
 	public void cadastrar() {
 		final int[] escolha = new int[2];
+		String status = "CRIAR";
 
 		JPanel panel = new JPanel();
 		JRadioButton button1 = new JRadioButton("Conta Corrente");
@@ -57,41 +59,33 @@ public class ContaController implements ContaRepository {
 		// Cria a caixa de diálogo com um título e os botões de rádio
 		JOptionPane.showMessageDialog(null, panel, "Escolha o tipo de conta a ser criada:", JOptionPane.PLAIN_MESSAGE);
 
-		if (escolha[0] == 1){
-			ContaCorrente novaCC = new CCBuilder()
-					.numero(001)
-					.agencia(0001)
-					.tipo(1)
-					.titular("Jefferson Pedro")
-					.saldo(0)
-					.limite(1000)
-					.criarContaCorrente();
-			cc.add(novaCC);
+		if (escolha[0] == 1) {
 
-			title = "Conta criada com sucesso!";
-			msg = "Parabéns, sua conta corrente foi criada com sucesso, no banco Brazil com Z";
+			ContaCorrente cc = criaOuAtualizaContaCC(status);
 
-			JOptionPane.showMessageDialog(null, msg,title,JOptionPane.INFORMATION_MESSAGE);
+			if (cc != null) {
+				title = "Conta criada com sucesso!";
+				msg = "Parabéns, sua conta corrente foi criada com sucesso, no banco Brazil com Z";
+				JOptionPane.showMessageDialog(null, msg, title, JOptionPane.INFORMATION_MESSAGE);
 
-		}else{
-			ContaPoupanca novaCP = new CPBuilder()
-					.numero(001)
-					.agencia(1001)
-					.tipo(1)
-					.titular("Anna Thays")
-					.saldo(0)
-					.aniversario(25)
-					.criarContaPoupanca();
+			}else{
+				System.err.println("Erro, conta não criada.");
+			}
+		} else {
 
-			cp.add(novaCP);
+			ContaPoupanca cc = criaOuAtualizaContaCP(status);
+			if (cc != null) {
+				title = "Conta criada com sucesso!";
+				msg = "Parabéns, sua conta poupança foi criada com sucesso, no banco Brazil com Z";
+				JOptionPane.showMessageDialog(null, msg, title, JOptionPane.INFORMATION_MESSAGE);
+			}else{
+				System.err.println("Erro, conta não criada.");
+			}
 
-			title = "Conta criada com sucesso!";
-			msg = "Parabéns, sua conta poupança foi criada com sucesso, no banco Brazil com Z";
-
-			JOptionPane.showMessageDialog(null, msg,title,JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, msg, title, JOptionPane.INFORMATION_MESSAGE);
 		}
 
-    }
+	}
 
 	@Override
 	public void atualizar() {
@@ -100,9 +94,9 @@ public class ContaController implements ContaRepository {
 				.filter(c -> c.getNumero() == numero)
 				.findFirst();
 
-		if (ccEncontrada.isPresent()){
+		if (ccEncontrada.isPresent()) {
 			ContaCorrente cc = ccEncontrada.get();
-			
+
 		}
 	}
 
@@ -110,12 +104,10 @@ public class ContaController implements ContaRepository {
 	public void deletar(int numero) {
 
 	}
-
 	@Override
 	public void sacar(int numero, float valor) {
 
 	}
-
 	@Override
 	public void depositar(int numero, float valor) {
 
@@ -125,4 +117,93 @@ public class ContaController implements ContaRepository {
 	public void transferir(int numeroOrigem, int numeroDestino, float valor) {
 
 	}
+
+	private ContaCorrente criaOuAtualizaContaCC(String status) {
+		int num = 1;
+		int agencia = 1;
+		String titular = null;
+		double saldo = 0;
+
+		JTextField titularField = new JTextField();
+		JTextField saldoField = new JTextField();
+
+
+		Object[] fields = {
+				"Titular: ", titularField,
+				"Saldo: ", saldoField,
+
+		};
+
+
+		JOptionPane.showConfirmDialog(null, fields, status + "A CONTA ", JOptionPane.OK_CANCEL_OPTION);
+
+		try {
+			titular = titularField.getText();
+			String saldoStr = saldoField.getText();
+			saldo = Double.parseDouble(saldoStr);
+
+			ContaCorrente novaCC = new CCBuilder()
+					.numero(num++)
+					.agencia(agencia++)
+					.tipo(1)
+					.titular(titular)
+					.saldo(saldo)
+					.limite(1000)
+					.criarContaCorrente();
+			cc.add(novaCC);
+
+			return novaCC;
+		} catch (NumberFormatException e) {
+			System.err.println("Erro ao converter valores. Certifique-se de preencher os campos corretamente.");
+			return null;
+		}catch (Exception e) {
+			System.err.println("Erro ao criar objeto");
+			return null;
+		}
+	}
+
+	private ContaPoupanca criaOuAtualizaContaCP(String status) {
+		int num = 001;
+		int agencia = 1001;
+		String titular = null;
+		float saldo = 0;
+		int aniversario = 0;
+
+		JTextField titularField = new JTextField();
+		JTextField saldoField = new JTextField();
+		JTextField limiteField = new JTextField();
+
+		Object[] fields = {
+				"Titular: ", titularField,
+				"Saldo: ", saldoField,
+				"Limite: ", limiteField
+		};
+
+		JOptionPane.showConfirmDialog(null, fields, status + "A CONTA ", JOptionPane.OK_CANCEL_OPTION);
+
+		try {
+
+			titular = titularField.getText();
+			String saldoStr = saldoField.getText();
+			saldo = Float.parseFloat(saldoStr);
+			aniversario = Integer.parseInt(limiteField.getText());
+
+			ContaPoupanca novaCP = new CPBuilder()
+					.numero(num++)
+					.agencia(agencia++)
+					.tipo(2)
+					.titular(titular)
+					.saldo(saldo)
+					.aniversario(aniversario)
+					.criarContaPoupanca();
+
+			cp.add(novaCP);
+			return novaCP;
+
+		} catch (Exception e) {
+			System.err.println("Erro ao criar objeto");
+			return null;
+		}
+	}
 }
+
