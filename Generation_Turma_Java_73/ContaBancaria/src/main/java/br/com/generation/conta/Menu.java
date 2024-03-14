@@ -7,61 +7,38 @@ import br.com.generation.model.ContaCorrente;
 import br.com.generation.model.ContaPoupanca;
 import br.com.generation.util.Cores;
 
+import javax.swing.*;
+
 public class Menu {
 	public static void main(String[] args) {
 
 		ContaController controller = new ContaController();
-		/*
-				ContaCorrente cc1 = new ContaCorrente(1, 123, 1, "José da Silva", 0.0f, 1000.0f);
-				cc1.visualizar();
-				cc1.sacar(12000.0f);
-				cc1.visualizar();
-				cc1.depositar(5000.0f);
-				cc1.visualizar();
-				
-		        // Teste da Classe Conta Poupança
-				ContaPoupanca cp1 = new ContaPoupanca(2, 123, 2, "Maria dos Santos", 100000.0f, 15);
-				cp1.visualizar();
-		        cp1.sacar(1000.0f);
-				cp1.visualizar();
-				cp1.depositar(5000.0f);
-				cp1.visualizar();
-
-		 */
-
-				Scanner leia = new Scanner(System.in);
+		Scanner leia = new Scanner(System.in);
 				
 				int opcao;
 
 				while (true) {
 
-					System.out.println(Cores.TEXT_YELLOW + Cores.ANSI_BLACK_BACKGROUND
-							+ "*****************************************************");
-					System.out.println("                                                     ");
-					System.out.println("                BANCO DO BRAZIL COM Z                ");
-					System.out.println("                                                     ");
-					System.out.println("*****************************************************");
-					System.out.println("                                                     ");
-					System.out.println("            1 - Criar Conta                          ");
-					System.out.println("            2 - Listar todas as Contas               ");
-					System.out.println("            3 - Buscar Conta por Numero              ");
-					System.out.println("            4 - Atualizar Dados da Conta             ");
-					System.out.println("            5 - Apagar Conta                         ");
-					System.out.println("            6 - Sacar                                ");
-					System.out.println("            7 - Depositar                            ");
-					System.out.println("            8 - Transferir valores entre Contas      ");
-					System.out.println("            9 - Sair                                 ");
-					System.out.println("                                                     ");
-					System.out.println("*****************************************************");
-					System.out.println("Entre com a opção desejada:                          ");
-					System.out.println("                                                     " + Cores.TEXT_RESET);
+					opcao = Integer.parseInt(JOptionPane.showInputDialog(
+							 "*****************************************************\n\n" +
+									" BANCO DO BRAZIL COM Z \n\n" +
+							 "*****************************************************\n\n" +
+									" 1 - Criar Conta \n" +
+									" 2 - Listar todas as Contas \n" +
+									" 3 - Buscar Conta por Numero \n" +
+									" 4 - Atualizar Dados da Conta \n" +
+									" 5 - Apagar Conta \n" +
+									" 6 - Sacar \n" +
+									" 7 - Depositar \n" +
+									" 8 - Transferir valores entre Contas \n" +
+									" 9 - Sair \n\n"
+					));
 
-					opcao = leia.nextInt();
+					System.out.println(opcao);
 
 					if (opcao == 9) {
 						System.out.println(Cores.TEXT_WHITE_BOLD + "\nBanco do Brazil com Z - O seu Futuro começa aqui!");
 						sobre();
-						leia.close();
 						System.exit(0);
 					}
 
@@ -107,9 +84,9 @@ public class Menu {
 
 			public static void sobre() {
 				System.out.println("\n*********************************************************");
-				System.out.println("Projeto Desenvolvido por: Yuri Oliveira");
+				System.out.println("Projeto Desenvolvido por: Jefferson Pedro");
 				System.out.println("Generation Brasil - generation@generation.org");
-				System.out.println("github.com/conteudoGeneration");
+				System.out.println("github.com/Jefferson-Pedro");
 				System.out.println("*********************************************************");
 			}
 	}
