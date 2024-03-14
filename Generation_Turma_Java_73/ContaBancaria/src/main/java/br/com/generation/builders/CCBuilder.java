@@ -8,7 +8,7 @@ public class CCBuilder {
     private int agencia;
     private int tipo;
     private String titular;
-    private float saldo;
+    private double saldo;
     private float limite;
 
     //SETTERS
@@ -33,7 +33,7 @@ public class CCBuilder {
         return this;
     }
 
-    public CCBuilder saldo(float saldo) {
+    public CCBuilder saldo(double saldo) {
         this.saldo = saldo;
         return this;
     }
