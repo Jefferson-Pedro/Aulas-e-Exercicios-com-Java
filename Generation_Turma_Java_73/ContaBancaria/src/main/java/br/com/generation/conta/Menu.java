@@ -44,8 +44,8 @@ public class Menu {
 
 					switch (opcao) {
 					case 1:
-						controller.cadastrar();
 						System.out.println(Cores.TEXT_WHITE + "Criar Conta\n\n");
+						controller.cadastrar();
 						break;
 					case 2:
 						System.out.println(Cores.TEXT_WHITE + "Listar todas as Contas\n\n");
@@ -53,27 +53,27 @@ public class Menu {
 						break;
 					case 3:
 						System.out.println(Cores.TEXT_WHITE + "Consultar dados da Conta - por número\n\n");
-
+						controller.procurarPorNumero();
 						break;
 					case 4:
 						System.out.println(Cores.TEXT_WHITE + "Atualizar dados da Conta\n\n");
-
+						controller.atualizar();
 						break;
 					case 5:
 						System.out.println(Cores.TEXT_WHITE + "Apagar a Conta\n\n");
-
+						controller.deletar();
 						break;
 					case 6:
 						System.out.println(Cores.TEXT_WHITE + "Saque\n\n");
-
+						controller.sacar();
 						break;
 					case 7:
 						System.out.println(Cores.TEXT_WHITE + "Depósito\n\n");
-
+						controller.depositar();
 						break;
 					case 8:
 						System.out.println(Cores.TEXT_WHITE + "Transferência entre Contas\n\n");
-
+						controller.transferir();
 						break;
 					default:
 						System.out.println(Cores.TEXT_RED_BOLD + "\nOpção Inválida!\n" + Cores.TEXT_RESET);
