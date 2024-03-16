@@ -25,13 +25,41 @@ public class ContaController implements ContaRepository {
 	List<ContaCorrente> cc = new ArrayList<ContaCorrente>();
 
 	@Override
-	public void procurarPorNumero(int numero) {
+	public void procurarPorNumero() {
 
+		Integer escolha = Integer.parseInt(JOptionPane.showInputDialog("Digite o tipo da conta (1- Conta Corrente ou 2- Conta Poupança):"));
+		Integer numero = Integer.parseInt(JOptionPane.showInputDialog("Digite o número da conta ser alterado:"));
+
+		switch (escolha) {
+			case 1:
+				for (int i = 0; i < cc.size(); i++) {
+					ContaCorrente contaCorrente = cc.get(i);
+					if (contaCorrente.getNumero() == numero)
+						contaCorrente.visualizar();
+				}
+				break;
+
+			case 2:
+				for (int j = 0; j < cp.size(); j++) {
+					ContaPoupanca contaPoupanca = cp.get(j);
+					if (contaPoupanca.getNumero() == numero)
+						contaPoupanca.visualizar();
+				}
+				break;
+
+			default:
+				JOptionPane.showMessageDialog(null, "Opção invalida!",
+						"Erro", JOptionPane.ERROR_MESSAGE);
+				break;
+		}
 	}
 
 	@Override
 	public void listarTodas() {
-		//System.out.println(cc.stream().forEach(););
+		System.out.println("************************ CONTAS CORRENTES *****************************");
+		cc.forEach(ContaCorrente::visualizar);
+		System.out.println("************************ CONTAS POUPANÇAS *****************************");
+		cp.forEach(ContaPoupanca::visualizar);
 	}
 
 	@Override
@@ -91,35 +119,239 @@ public class ContaController implements ContaRepository {
 			JOptionPane.showMessageDialog(null, msg, title, JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
-
 	@Override
 	public void atualizar() {
+		String status = "ATUALIZAR";
 		Integer numero = Integer.parseInt(JOptionPane.showInputDialog("Digite o número da conta ser alterado:"));
-		Optional<ContaCorrente> ccEncontrada = cc.stream()
-				.filter(c -> c.getNumero() == numero)
-				.findFirst();
+		Integer escolha = Integer.parseInt(JOptionPane.showInputDialog("Digite o tipo da conta (1- Conta Corrente ou 2- Conta Poupança):"));
 
-		if (ccEncontrada.isPresent()) {
-			ContaCorrente contaCorrente = ccEncontrada.get();
+		switch (escolha) {
+			case 1:
+				for (int i = 0; i < cc.size(); i++) {
+					ContaCorrente contaCorrente = cc.get(i);
+					if (contaCorrente.getNumero() == numero) {
 
+						ContaCorrente contaCorrenteAtualizada = criaOuAtualizaContaCC(status);
+
+						if (contaCorrenteAtualizada != null) {
+
+							cc.set(i, contaCorrenteAtualizada);
+							System.out.println("Conta atualizada com sucesso!");
+
+						} else {
+							System.err.println("Erro ao atualizar a conta.");
+						}
+						break;
+					}
+				}
+				break;
+
+			case 2:
+				for (int i = 0; i < cp.size(); i++) {
+					ContaPoupanca contaPoupanca = cp.get(i);
+					if (contaPoupanca.getNumero() == numero) {
+
+						ContaPoupanca contaPoupancaAtualizada = criaOuAtualizaContaCP(status);
+
+						if (contaPoupancaAtualizada != null) {
+
+							cp.set(i, contaPoupancaAtualizada);
+							System.out.println("Conta atualizada com sucesso!");
+
+						} else {
+							System.err.println("Erro ao atualizar a conta.");
+						}
+						break;
+					}
+				}
+				break;
+
+			default:
+				JOptionPane.showMessageDialog(null, "Opção invalida!",
+						"Erro", JOptionPane.ERROR_MESSAGE);
+				break;
+		}
+	}
+	@Override
+	public void deletar() {
+		Integer escolha = Integer.parseInt(JOptionPane.showInputDialog("Digite o tipo da conta (1- Conta Corrente ou 2- Conta Poupança):"));
+		Integer numero = Integer.parseInt(JOptionPane.showInputDialog("Digite o número da conta ser alterado:"));
+
+		switch (escolha) {
+			case 1:
+				for (int i = 0; i < cc.size(); i++) {
+					ContaCorrente contaCorrente = cc.get(i);
+					if (contaCorrente.getNumero() == numero) {
+						cc.remove(i);
+						JOptionPane.showMessageDialog(null, "Conta deletada com sucesso!",
+								"Erro", JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
+				JOptionPane.showMessageDialog(null, "Conta não encontrada!",
+						"Erro", JOptionPane.ERROR_MESSAGE);
+				break;
+
+			case 2:
+				for (int j = 0; j < cp.size(); j++) {
+					ContaPoupanca contaPoupanca = cp.get(j);
+					if (contaPoupanca.getNumero() == numero) {
+						cc.remove(j);
+						JOptionPane.showMessageDialog(null, "Conta deletada com sucesso!",
+								"Erro", JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
+				JOptionPane.showMessageDialog(null, "Conta não encontrada!",
+						"Erro", JOptionPane.ERROR_MESSAGE);
+				break;
+
+			default:
+				JOptionPane.showMessageDialog(null, "Opção invalida!",
+						"Erro", JOptionPane.ERROR_MESSAGE);
+				break;
+		}
+	}
+	@Override
+	public void sacar() {
+		Integer escolha = Integer.parseInt(JOptionPane.showInputDialog("Digite o tipo da conta (1- Conta Corrente ou 2- Conta Poupança):"));
+		Integer numero = Integer.parseInt(JOptionPane.showInputDialog("Digite o número da conta ser alterado:"));
+		Float valor = Float.parseFloat(JOptionPane.showInputDialog("Digite o valor da conta a ser sacada:"));
+
+		switch (escolha) {
+			case 1:
+				for (int i = 0; i < cc.size(); i++) {
+					ContaCorrente contaCorrente = cc.get(i);
+					if (contaCorrente.getNumero() == numero){
+						contaCorrente.sacar(valor);
+						cc.set(i, contaCorrente);
+					}
+
+				}
+				break;
+
+			case 2:
+				for (int j = 0; j < cp.size(); j++) {
+					ContaPoupanca contaPoupanca = cp.get(j);
+					if (contaPoupanca.getNumero() == numero){
+						contaPoupanca.sacar(valor);
+						cp.set(j, contaPoupanca);
+					}
+				}
+				break;
+
+			default:
+				JOptionPane.showMessageDialog(null, "Opção invalida!",
+						"Erro", JOptionPane.ERROR_MESSAGE);
+				break;
+		}
+	}
+	@Override
+	public void depositar() {
+		Integer escolha = Integer.parseInt(JOptionPane.showInputDialog("Digite o tipo da conta (1- Conta Corrente ou 2- Conta Poupança):"));
+		Integer numero = Integer.parseInt(JOptionPane.showInputDialog("Digite o número da conta ser alterado:"));
+		Float valor = Float.parseFloat(JOptionPane.showInputDialog("Digite o valor a ser depositado na conta:"));
+
+		switch (escolha) {
+			case 1:
+				for (int i = 0; i < cc.size(); i++) {
+					ContaCorrente contaCorrente = cc.get(i);
+					if (contaCorrente.getNumero() == numero){
+						contaCorrente.depositar(valor);
+						cc.set(i, contaCorrente);
+					}
+
+				}
+				break;
+
+			case 2:
+				for (int j = 0; j < cp.size(); j++) {
+					ContaPoupanca contaPoupanca = cp.get(j);
+					if (contaPoupanca.getNumero() == numero){
+						contaPoupanca.depositar(valor);
+						cp.set(j, contaPoupanca);
+					}
+				}
+				break;
+
+			default:
+				JOptionPane.showMessageDialog(null, "Opção invalida!",
+						"Erro", JOptionPane.ERROR_MESSAGE);
+				break;
 		}
 	}
 
 	@Override
-	public void deletar(int numero) {
+	public void transferir() {
+		Integer tipoOrigem = Integer.parseInt(JOptionPane.showInputDialog("Digite o tipo da conta Origem (1- Conta Corrente ou 2- Conta Poupança):"));
+		Integer contaOrigem = Integer.parseInt(JOptionPane.showInputDialog("Digite o numero da conta de origem:"));
+		Float valor = Float.parseFloat(JOptionPane.showInputDialog("Digite o valor a ser transferido:"));
+		Integer tipoDestino = Integer.parseInt(JOptionPane.showInputDialog("Digite o tipo da conta Destino (1- Conta Corrente ou 2- Conta Poupança):"));
+		Integer contaDestino = Integer.parseInt(JOptionPane.showInputDialog("Digite o número da conta de destino:"));
 
-	}
-	@Override
-	public void sacar(int numero, float valor) {
+		if (tipoOrigem == 1) {
+			for (int i = 0; i < cc.size(); i++) {
+				ContaCorrente contaCorrente = cc.get(i);
+				if (contaCorrente.getNumero() == contaOrigem){
+					contaCorrente.sacar(valor);
+					cc.set(i, contaCorrente);
+				}
+				System.out.println("Conta não encontrada!");
+			}
+			if (tipoDestino == 1) {
+				for (int i = 0; i < cc.size(); i++) {
+					ContaCorrente contaCorrente = cc.get(i);
+					if (contaCorrente.getNumero() == contaOrigem){
+						contaCorrente.depositar(valor);
+						cc.set(i, contaCorrente);
+					}
+					System.out.println("Conta não encontrada!");
+				}
+			}else {
+				for (int j = 0; j < cp.size(); j++) {
+					ContaPoupanca contaPoupanca = cp.get(j);
+					if (contaPoupanca.getNumero() == contaOrigem){
+						contaPoupanca.depositar(valor);
+						cp.set(j, contaPoupanca);
+					}
+				}
+			}
 
-	}
-	@Override
-	public void depositar(int numero, float valor) {
+		}else if (tipoOrigem == 2) {
+			for (int i = 0; i < cp.size(); i++) {
+				ContaPoupanca contaPoupanca = cp.get(i);
+				if (contaPoupanca.getNumero() == contaOrigem) {
+					contaPoupanca.sacar(valor);
+					cp.set(i, contaPoupanca);
+				}
+				System.out.println("Conta não encontrada!");
+			}
+			if (tipoDestino == 2) {
+				for (int i = 0; i < cp.size(); i++) {
+					ContaPoupanca contaPoupanca = cp.get(i);
+					if (contaPoupanca.getNumero() == contaOrigem) {
+						contaPoupanca.depositar(valor);
+						cp.set(i, contaPoupanca);
+					}
+					System.out.println("Conta não encontrada!");
+				}
+			} else {
+				for (int i = 0; i < cc.size(); i++) {
+					ContaCorrente contaCorrente = cc.get(i);
+					if (contaCorrente.getNumero() == contaOrigem){
+						contaCorrente.depositar(valor);
+						cc.set(i, contaCorrente);
+					}
+					System.out.println("Conta não encontrada!");
+				}
+			}
 
-	}
+		}else{
+			JOptionPane.showMessageDialog(null, "Opção invalida!",
+					"Erro", JOptionPane.ERROR_MESSAGE);
+		}
 
-	@Override
-	public void transferir(int numeroOrigem, int numeroDestino, float valor) {
+
+
+
 
 	}
 
@@ -176,12 +408,13 @@ public class ContaController implements ContaRepository {
 
 		JTextField titularField = new JTextField();
 		JTextField saldoField = new JTextField();
-		JTextField limiteField = new JTextField();
+		JTextField aniversarioField = new JTextField();
+
 
 		Object[] fields = {
 				"Titular: ", titularField,
 				"Saldo: ", saldoField,
-				"Limite: ", limiteField
+				"Aniversario: ", aniversarioField,
 		};
 
 		JOptionPane.showConfirmDialog(null, fields, status + "A CONTA ", JOptionPane.OK_CANCEL_OPTION);
@@ -195,7 +428,7 @@ public class ContaController implements ContaRepository {
 			}else {
 				saldo = Float.parseFloat(saldoStr);
 			}
-			aniversario = Integer.parseInt(limiteField.getText());
+			aniversario = Integer.parseInt(aniversarioField.getText());
 
 			ContaPoupanca novaCP = new CPBuilder()
 					.numero(num++)
