@@ -61,9 +61,11 @@ public class ContaController implements ContaRepository {
 
 		if (escolha[0] == 1) {
 
-			ContaCorrente cc = criaOuAtualizaContaCC(status);
+			ContaCorrente contaCorrente = criaOuAtualizaContaCC(status);
 
-			if (cc != null) {
+			if (contaCorrente != null) {
+				cc.add(contaCorrente);
+
 				title = "Conta criada com sucesso!";
 				msg = "Parabéns, sua conta corrente foi criada com sucesso, no banco Brazil com Z";
 				JOptionPane.showMessageDialog(null, msg, title, JOptionPane.INFORMATION_MESSAGE);
@@ -71,20 +73,23 @@ public class ContaController implements ContaRepository {
 			}else{
 				System.err.println("Erro, conta não criada.");
 			}
-		} else {
 
-			ContaPoupanca cc = criaOuAtualizaContaCP(status);
-			if (cc != null) {
+		} else {
+			ContaPoupanca contaPoupanca = criaOuAtualizaContaCP(status);
+
+			if (contaPoupanca != null) {
+				cp.add(contaPoupanca);
+
 				title = "Conta criada com sucesso!";
 				msg = "Parabéns, sua conta poupança foi criada com sucesso, no banco Brazil com Z";
 				JOptionPane.showMessageDialog(null, msg, title, JOptionPane.INFORMATION_MESSAGE);
+
 			}else{
 				System.err.println("Erro, conta não criada.");
 			}
 
 			JOptionPane.showMessageDialog(null, msg, title, JOptionPane.INFORMATION_MESSAGE);
 		}
-
 	}
 
 	@Override
@@ -95,7 +100,7 @@ public class ContaController implements ContaRepository {
 				.findFirst();
 
 		if (ccEncontrada.isPresent()) {
-			ContaCorrente cc = ccEncontrada.get();
+			ContaCorrente contaCorrente = ccEncontrada.get();
 
 		}
 	}
@@ -131,17 +136,18 @@ public class ContaController implements ContaRepository {
 		Object[] fields = {
 				"Titular: ", titularField,
 				"Saldo: ", saldoField,
-
 		};
-
 
 		JOptionPane.showConfirmDialog(null, fields, status + "A CONTA ", JOptionPane.OK_CANCEL_OPTION);
 
 		try {
 			titular = titularField.getText();
 			String saldoStr = saldoField.getText();
-			saldo = Double.parseDouble(saldoStr);
-
+			if(saldoStr.isEmpty()){
+				saldo = 0;
+			}else {
+				saldo = Double.parseDouble(saldoStr);
+			}
 			ContaCorrente novaCC = new CCBuilder()
 					.numero(num++)
 					.agencia(agencia++)
@@ -150,7 +156,6 @@ public class ContaController implements ContaRepository {
 					.saldo(saldo)
 					.limite(1000)
 					.criarContaCorrente();
-			cc.add(novaCC);
 
 			return novaCC;
 		} catch (NumberFormatException e) {
@@ -185,7 +190,11 @@ public class ContaController implements ContaRepository {
 
 			titular = titularField.getText();
 			String saldoStr = saldoField.getText();
-			saldo = Float.parseFloat(saldoStr);
+			if(saldoStr.isEmpty()){
+				saldo = 0;
+			}else {
+				saldo = Float.parseFloat(saldoStr);
+			}
 			aniversario = Integer.parseInt(limiteField.getText());
 
 			ContaPoupanca novaCP = new CPBuilder()
@@ -197,7 +206,6 @@ public class ContaController implements ContaRepository {
 					.aniversario(aniversario)
 					.criarContaPoupanca();
 
-			cp.add(novaCP);
 			return novaCP;
 
 		} catch (Exception e) {
